@@ -272,7 +272,9 @@ async function fetchInfo(_a) {
 
 	if( _a != '0x0000000000000000000000000000000000000000') {
 		$("avl-lend-bbal").innerHTML = ( Number(_info[9]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
+
 		$("avl-call-wbbal").innerHTML = ( Number(_info[11]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
+		$("avl-call-xve").innerHTML = ( Number(_info[12]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
 
 		$("avl-repay-bmax").innerHTML = ( Number(_info[15]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
 		$("avl-repay-borr").innerHTML = ( Number(_info[13]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
