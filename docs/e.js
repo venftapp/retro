@@ -304,10 +304,10 @@ async function pledge() {
 	if(alvo[0]==false) {
 		notice(`
 			<h3>Approval required</h3>
-			eTHENA Depositor requires your approval to complete this conversion.<br><br>
+			Depositor requires your approval to complete this conversion.<br><br>
 			<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
 		`);
-		let _tr = await ve.approve(VENAMM,_id);
+		let _tr = await ve.approve(VLENDR,_id);
 		console.log(_tr);
 		notice(`
 			<h3>Submitting Approval Transaction!</h3>
@@ -326,7 +326,7 @@ async function pledge() {
 	if(alvo[1]==true) {
 		notice(`
 			<h3>Vote-Reset required</h3>
-			eTHENA Depositor requires your veNFT to be in a non-voted state to complete this conversion.
+			Depositor requires your veNFT to be in a non-voted state to complete this conversion.
 			<br><br>
 			Resetting your Votes..
 			<br><br>
