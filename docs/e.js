@@ -708,9 +708,9 @@ async function repay() {
 		vl.borrowings(window.ethereum.selectedAddress)
 	]);
 
-	console.log("alvo,inp: ",alvo,am);
-
 	amt = alvo[2];
+
+	console.log("alvo,inp: ",alvo,amt);
 
 	if(Number(amt)>Number(alvo[1])) {notice(`<h2>Insufficient Balance!</h2><h3>Desired:</h3>${amt/1e18}<br><h3>Actual Balance:</h3>${al[1]/1e18}<br><br><b>Please reduce the amount and retry again, or mint some more ${BASE_NAME}.`);}
 
