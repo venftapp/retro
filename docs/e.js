@@ -175,7 +175,7 @@ async function gubs() {
 	bal = await ve.balanceOf(window.ethereum.selectedAddress);
 	if (bal == 0) $("nft-bal").innerHTML = "No NFTs owned!";
 	else {
-	  $("nft-bal").innerHTML = "Balance: "+bal+" veNFT";
+	  $("nft-bal").innerHTML = `${bal} ${VE_NAME}`;
 	  nid=[];
 	  for(i=0;i<bal;i++) {
 	  	nid[i]=ve.tokenOfOwnerByIndex(window.ethereum.selectedAddress,i);
@@ -198,131 +198,18 @@ async function gubs() {
 async function quote() {
 	_id = $("nft-sel").value;
 	ve = new ethers.Contract(VENFT,VEABI,provider);
-	vm=new ethers.Contract(VENAMM,VMABI,provider);
-	wrap=new ethers.Contract(WRAP,VEABI,provider);
+	vl = new ethers.Contract(VLENDR,VLENDRABI,provider);
 	qd = await Promise.all([
-		ve.locked(ID),
 		ve.locked(_id),
-		wrap.totalSupply(),
-		ve.balanceOfNFT(_id)
-	]);
-	console.log("quoted: ",qd);
-	_base = Number(qd[0].amount);
-	_inc = Number(qd[1].amount);
-	_ts = Number(qd[2]);
-	_amt = (_inc * _ts) / _base;
-	_tlw = (Number(qd[1].end)/86400/7 - Date.now()/86400000/7).toFixed();
-	$("nft-amt").innerHTML = fornum(qd[3],18);
-	$("nft-tl").innerHTML = `${ fornum(_inc,18) } ${BASENAME}, locked for ${_tlw} Weeks`;
-	$("nft-offer").innerHTML = fornum(_amt,18);
-	$("claim-offer").innerHTML = "Get "+ fornum(_amt,18) + " " + WRAPNAME;
-}
-
-async function sell() {
-	_id = $("nft-sel").value;
-	ve = new ethers.Contract(VENFT, VEABI, signer);
-	vm = new ethers.Contract(VENAMM,VMABI,signer);
-	wrap=new ethers.Contract(WRAP,VEABI,signer);
-	alvo = await Promise.all([
-		ve.isApprovedOrOwner(VENAMM,_id),
-		ve.voted(_id)
-	]);
-	console.log("alvo: ",alvo);
-	if(alvo[0]==false) {
-		notice(`
-			<h3>Approval required</h3>
-			eTHENA Depositor requires your approval to complete this conversion.<br><br>
-			<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
-		`);
-		let _tr = await ve.approve(VENAMM,_id);
-		console.log(_tr);
-		notice(`
-			<h3>Submitting Approval Transaction!</h3>
-			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-		`);
-		_tw = await _tr.wait()
-		console.log(_tw)
-		notice(`
-			<h3>Approval Completed!</h3>
-			<br><br>
-			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-			<br><br>
-			Please confirm the Trade at your wallet provider now.
-		`);
-	}
-	if(alvo[1]==true) {
-		notice(`
-			<h3>Vote-Reset required</h3>
-			eTHENA Depositor requires your veNFT to be in a non-voted state to complete this conversion.
-			<br><br>
-			Resetting your Votes..
-			<br><br>
-			<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
-		`);
-		voter = new ethers.Contract(VOTER, ["function reset(uint)"], signer);
-		let _tr = await voter.reset(_id);
-		console.log(_tr);
-		notice(`
-			<h3>Submitting Vote-Reset Transaction!</h3>
-			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-		`);
-		_tw = await _tr.wait()
-		console.log(_tw)
-		notice(`
-			<h3>Vote-Reset Completed!</h3>
-			<br><br>
-			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-			<br><br>
-			Please confirm the Trade at your wallet provider now.
-		`);
-	}
-	qd = await Promise.all([
-		ve.locked(ID),
-		ve.locked(_id),
-		wrap.totalSupply(),
-		ve.balanceOfNFT(_id)
+		vl.info(window.ethereum.selectedAddress)
 	]);
 	console.log("sell.quoted: ",qd);
-	_base = Number(qd[0].amount);
-	_inc = Number(qd[1].amount);
-	_ts = Number(qd[2]);
-	_amt = (_inc * _ts) / _base;
-	_tlw = (Number(qd[1].end)/86400/7 - Date.now()/86400000/7).toFixed();
-	_q = [
-		_amt,
-		_inc,
-		_tlw,
-	];
-	notice(`
-		<h3>Order Summary</h3>
-		<b>Converting veNFT:</b><br>
+	_inc = Number(qd[0].amount);
+	_pwv = Number(qd[1][7]);
+	_amt = _inc / _pwv * 1e18;
+	console.log("quoted: ",qd);
 
-		<img style='height:20px;position:relative;top:4px' src="${BASELOGO}"> NFT Token ID: <u>#<b>${_id}</b></u><br>
-		<img style='height:20px;position:relative;top:4px' src="${BASELOGO}"> Amount Locked: <u>${ fornum(_q[1],18).toLocaleString() } ${BASENAME}</u><br>
-		<img style='height:20px;position:relative;top:4px' src="img/lock.svg">Time to Unlock: <u>${Number(_q[2])} Weeks</u> from now<br><br>
-		<b>Expected to Get:</b><br>
-		<img style='height:20px;position:relative;top:4px' src="${WRAPLOGO}"> <u>${ fornum(_q[0],18).toLocaleString() } ${WRAPNAME}</u><br><br><br><br>
-		<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
-	`);
-	let _tr = await vm.deposit(_id);
-	console.log(_tr);
-	notice(`
-		<h3>Order Submitted!</h3>
-		<br><h4>Minting ${TOKENNAME}</h4>
-		<img style='height:20px;position:relative;top:4px' src="${WRAPLOGO}"> <u>${ fornum(_q[0],18).toLocaleString() } ${WRAPNAME}</u><br>
-		<br><h4>Locking ${VENAME} (veNFT)</h4>
-		<img style='height:20px;position:relative;top:4px' src="${BASELOGO}"> <u>veNFT #<b>${_id}</b></u>,<br>Containing <u>${ fornum(_q[1],18).toLocaleString() } ${BASENAME}</u>,<br>Locked for <u>${Number(_q[2])} weeks</u>.<br><br>
-		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`);
-	_tw = await _tr.wait();
-	console.log(_tw)
-	notice(`
-		<h3>Order Completed!</h3>
-		Minted <img style='height:20px;position:relative;top:4px' src="${WRAPLOGO}"> <u>${fornum(_q[0],18)} ${WRAPNAME}</u> for <img style='height:20px;position:relative;top:4px' src="${BASELOGO}"> <u>veNFT #<b>${_id}</b></u>.
-		<br><br>
-		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`)
-	gubs()
+	$("nft-offer").innerHTML = fornum(_amt,18) + " " + W_VE_NAME;
 }
 
 function notice(c) {
@@ -384,6 +271,8 @@ async function fetchInfo(_a) {
 
 
 	if( _a != '0x0000000000000000000000000000000000000000') {
+		$("avl-lend-bbal").innerHTML = ( Number(_info[9]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
+		$("avl-call-wbbal").innerHTML = ( Number(_info[11]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
 
 		$("avl-repay-bmax").innerHTML = ( Number(_info[15]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
 		$("avl-repay-borr").innerHTML = ( Number(_info[13]) / 1e18 ).toLocaleString() + " " + BASE_NAME;
@@ -407,7 +296,6 @@ async function pledge() {
 	_id = $("nft-sel").value;
 	ve = new ethers.Contract(VENFT, VEABI, signer);
 	vl = new ethers.Contract(VLENDR,VLENDRABI,signer);
-	wrap=new ethers.Contract(WRAP,VEABI,signer);
 	alvo = await Promise.all([
 		ve.isApprovedOrOwner(VLENDR,_id),
 		ve.voted(_id)
@@ -470,7 +358,6 @@ async function pledge() {
 	_pwv = Number(qd[1][7]);
 	_amt = _inc / _pwv * 1e18;
 
-	_info = await vl.info(window.ethereum.selectedAddress);
 	notice(`
 		<h3>Pledge Summary</h3>
 		<b>Depositing your ${VE_NAME} NFT #${_id} as Collateral.</b>
@@ -510,6 +397,67 @@ async function pledge() {
 
 
 
+async function redeem() {
+
+	let amt = 0;
+	am = $("inp-redeem").value;
+	if(!isFinite(am) || am<1/1e18) {notice(`<h2>Please increase ${W_BASE_NAME} amount!</h2>You have entered an invalid or zero amount.<br><br>Your input: ${am}`);return}
+	amt = BigInt(Math.floor(am*1e18));
+
+	w_ve = new ethers.Contract(W_VE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
+	vl = new ethers.Contract(VLENDR,VLENDRABI,signer);
+
+	_info = await vl.info(window.ethereum.selectedAddress);
+	_wbbal = Number(_info[11]);
+	_avail = Number(_info[8 ]);
+	_price = Number(_info[6 ]);
+	_depos = BigInt(_wbbal) * BigInt(_price) / BigInt(1e18);
+	_desir = BigInt(_amt) * BigInt(_price) / BigInt(1e18);
+	_wdmax = BigInt(_avail) * BigInt(1e18) / BigInt(_price);
+
+	if( _desir > _avail + 1  ) {
+		notice(`
+			<h3>Withdrawal Limit Reached!</h3>
+			The desired amount of ${fornum(amt,18).toLocaleString()} ${W_BASE_NAME} cannot be redeemed for ${fornum(_desir,18).toLocaleString()} ${BASE_NAME} at the moment due to unavailability of ${BASE_NAME}, as it has been borrowed by ${VE_NAME} depositors.
+			<h4>Please try after some time.</h4>
+			<br>
+			<b>Your Lending Postion:</b>
+			<br>${fornum(_depos,18).toLocaleString()} ${BASE_NAME}
+			<br>${fornum(_wbbal,18).toLocaleString()} ${W_BASE_NAME}
+			<br>
+			</>Currently available for withdrawals:</b>
+			<br>${fornum(_avail,18).toLocaleString()} ${BASE_NAME}
+			<br>${fornum(_wdmax,18).toLocaleString()} ${W_BASE_NAME}
+		`);
+		return;
+	}
+
+	notice(`
+		<h3>Calling back ${BASE_NAME}</h3>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${BASE_NAME}</u>
+		<br>(${fornum(amt,18).toLocaleString()} ${W_BASE_NAME})
+		<br>
+		<br>Please confirm the Loan Call Back Transaction at your wallet provider now.
+	`);
+	let _tr = await vl.call(amt);
+	console.log(_tr);
+	notice(`
+		<h3>Calling back ${BASE_NAME}</h3>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${BASE_NAME}</u>
+		<br>(${fornum(amt,18).toLocaleString()} ${W_BASE_NAME})
+		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+	`);
+	_tw = await _tr.wait();
+	console.log(_tw)
+	notice(`
+		<h3>Called back ${BASE_NAME}</h3>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${BASE_NAME}</u>
+		<br>(${fornum(amt,18).toLocaleString()} ${W_BASE_NAME})
+		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+	`)
+	//gubs();
+	fetchInfo();
+}
 
 
 
@@ -539,8 +487,6 @@ async function lend() {
 	amt = BigInt(Math.floor(am*1e18));
 
 	base = new ethers.Contract(BASE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
-	vm = new ethers.Contract(VENAMM,VMABI,signer);
-	wrap=new ethers.Contract(WRAP,VEABI,signer);
 	alvo = await Promise.all([
 		base.allowance(window.ethereum.selectedAddress,VLENDR),
 		base.balanceOf(window.ethereum.selectedAddress)
@@ -610,8 +556,6 @@ async function call() {
 	amt = BigInt(Math.floor(am*1e18));
 
 	base = new ethers.Contract(BASE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
-	vm = new ethers.Contract(VENAMM,VMABI,signer);
-	wrap=new ethers.Contract(WRAP,VEABI,signer);
 	vl = new ethers.Contract(VLENDR,VLENDRABI,signer);
 
 	_info = await vl.info(window.ethereum.selectedAddress);
