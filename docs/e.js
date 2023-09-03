@@ -433,7 +433,7 @@ async function redeem() {
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
 	await gubs();
-	await fetchInfo();
+	await fetchInfo(window.ethereum.selectedAddress);
 }
 
 
@@ -523,7 +523,7 @@ async function lend() {
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
 	//gubs();
-	await fetchInfo();
+	await fetchInfo(window.ethereum.selectedAddress);
 }
 
 
@@ -534,15 +534,48 @@ async function call() {
 	if(!isFinite(am) || am<1/1e18) {notice(`<h2>Please increase ${W_BASE_NAME} amount!</h2>You have entered an invalid or zero amount.<br><br>Your input: ${am}`);return}
 	amt = BigInt(Math.floor(am*1e18));
 
-	base = new ethers.Contract(BASE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
 	vl = new ethers.Contract(VLENDR,VLENDRABI,signer);
+	wbase = new ethers.Contract(W_BASE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
 
-	_info = await vl.info(window.ethereum.selectedAddress);
+	alvo = await Promise.all([
+		wbase.allowance(window.ethereum.selectedAddress,VLENDR),
+		wbase.balanceOf(window.ethereum.selectedAddress),
+		vl.info(window.ethereum.selectedAddress)
+	]);
+
+	console.log("alvo,inp: ",alvo,am);
+
+	if(Number(amt)>Number(alvo[1])) {notice(`<h2>Insufficient Balance!</h2><h3>Desired:</h3>${amt/1e18}<br><h3>Actual Balance:</h3>${al[1]/1e18}<br><br><b>Please reduce the amount and retry again, or accumulate some more ${W_BASE_NAME}.`);}
+
+	if( Number(alvo[0]) < Number(alvo[1]) ) {
+		notice(`
+			<h3>Approval required</h3>
+			We require your ${W_BASE_NAME} approval to facilitate lending.<br><br>
+			<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
+		`);
+		let _tr = await wbase.approve(VLENDR,ethers.constants.MaxUint256);
+		console.log(_tr);
+		notice(`
+			<h3>Submitting Approval Transaction!</h3>
+			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+		`);
+		_tw = await _tr.wait()
+		console.log(_tw)
+		notice(`
+			<h3>Approved ${W_BASE_NAME}!</h3>
+			<br><br>
+			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+			<br><br>
+			Please confirm the final Lending Transaction at your wallet provider now.
+		`);
+	}
+
+	_info = alvo[2];
 	_wbbal = Number(_info[11]);
 	_avail = Number(_info[8 ]);
 	_price = Number(_info[6 ]);
 	_depos = BigInt(_wbbal) * BigInt(_price) / BigInt(1e18);
-	_desir = BigInt(_amt) * BigInt(_price) / BigInt(1e18);
+	_desir = BigInt(amt) * BigInt(_price) / BigInt(1e18);
 	_wdmax = BigInt(_avail) * BigInt(1e18) / BigInt(_price);
 
 	if( _desir > _avail + 1  ) {
@@ -585,7 +618,7 @@ async function call() {
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
 	//gubs();
-	await fetchInfo();
+	await fetchInfo(window.ethereum.selectedAddress);
 }
 
 
@@ -659,7 +692,7 @@ async function borrow() {
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
 	//gubs();
-	await fetchInfo();
+	await fetchInfo(window.ethereum.selectedAddress);
 }
 
 async function repay() {
@@ -724,5 +757,5 @@ async function repay() {
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
 	gubs();
-	await fetchInfo();
+	await fetchInfo(window.ethereum.selectedAddress);
 }
