@@ -367,7 +367,7 @@ async function pledge() {
 		<img style='height:20px;position:relative;top:4px' src="img/lock.svg"> Amount Locked: <u>${ fornum(_inc,18).toLocaleString() } ${BASE_NAME}</u><br>
 		<b>Expected to Get:</b><br>
 		<img style='height:20px;position:relative;top:4px' src="${W_VE_LOGO}"> <u>${ fornum(_amt,18).toLocaleString() } ${W_VE_NAME}</u><br>
-		(1 ${W_VE_NAME} = ${(_pwc/1e18).toFixed(4)} ${VE_NAME})<br>
+		(1 ${W_VE_NAME} = ${(_pwv/1e18).toFixed(4)} ${VE_NAME})<br>
 		NOTE: Your veNFT will get Max-Locked!
 		<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
 	`);
