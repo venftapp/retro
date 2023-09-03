@@ -402,7 +402,7 @@ async function redeem() {
 
 	let amt = 0;
 	am = $("inp-redeem").value;
-	if(!isFinite(am) || am<1/1e18) {notice(`<h2>Please increase ${W_BASE_NAME} amount!</h2>You have entered an invalid or zero amount.<br><br>Your input: ${am}`);return}
+	if(!isFinite(am) || am<1/1e18) {notice(`<h2>Please increase ${W_VE_NAME} amount!</h2>You have entered an invalid or zero amount.<br><br>Your input: ${am}`);return;}
 	amt = BigInt(Math.floor(am*1e18));
 
 	w_ve = new ethers.Contract(W_VE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
@@ -410,7 +410,7 @@ async function redeem() {
 
 	notice(`
 		<h3>Redeeming ${W_VE_NAME}</h3>
-		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${W_VE_NAME}</u>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(amt,18).toLocaleString()} ${W_VE_NAME}</u>
 		<br>
 		<br>Please confirm the Redeem Transaction at your wallet provider now.
 	`);
@@ -418,7 +418,7 @@ async function redeem() {
 	console.log(_tr);
 	notice(`
 		<h3>Redeeming ${W_VE_NAME}</h3>
-		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${W_VE_NAME}</u>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(amt,18).toLocaleString()} ${W_VE_NAME}</u>
 		<br>
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
 	`);
@@ -426,7 +426,7 @@ async function redeem() {
 	console.log(_tw)
 	notice(`
 		<h3>Redeemed ${W_VE_NAME}</h3>
-		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${W_VE_NAME}</u>
+		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(amt,18).toLocaleString()} ${W_VE_NAME}</u>
 		<h3>Minted new ${VE_NAME} NFT</h3>
 		NFT ID :
 		<br>Locked Amount : ${""} ${BASE_NAME}
@@ -550,12 +550,11 @@ async function call() {
 			<h3>Withdrawal Limit Reached!</h3>
 			The desired amount of ${fornum(amt,18).toLocaleString()} ${W_BASE_NAME} cannot be redeemed for ${fornum(_desir,18).toLocaleString()} ${BASE_NAME} at the moment due to unavailability of ${BASE_NAME}, as it has been borrowed by ${VE_NAME} depositors.
 			<h4>Please try after some time.</h4>
-			<br>
 			<b>Your Lending Postion:</b>
 			<br>${fornum(_depos,18).toLocaleString()} ${BASE_NAME}
 			<br>${fornum(_wbbal,18).toLocaleString()} ${W_BASE_NAME}
 			<br>
-			</>Currently available for withdrawals:</b>
+			<b>Currently available for withdrawals:</b>
 			<br>${fornum(_avail,18).toLocaleString()} ${BASE_NAME}
 			<br>${fornum(_wdmax,18).toLocaleString()} ${W_BASE_NAME}
 		`);
