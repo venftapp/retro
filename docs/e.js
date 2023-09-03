@@ -429,9 +429,9 @@ async function redeem() {
 		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${W_VE_NAME}</u>
 		<h3>Minted new ${VE_NAME} NFT</h3>
 		NFT ID :
-		<br>Locked Amount : ${} ${BASE_NAME}
+		<br>Locked Amount : ${""} ${BASE_NAME}
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`)
+	`);
 	await gubs();
 	await fetchInfo();
 }
@@ -521,7 +521,7 @@ async function lend() {
 		<br>
 		<br><b>${W_BASE_NAME} are required to Withdraw ("Call back your Loan") your original ${BASE_NAME} tokens. Keep them safe!</b>
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`)
+	`);
 	//gubs();
 	await fetchInfo();
 }
@@ -584,7 +584,7 @@ async function call() {
 		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(_desir,18).toLocaleString()} ${BASE_NAME}</u>
 		<br>(${fornum(amt,18).toLocaleString()} ${W_BASE_NAME})
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`)
+	`);
 	//gubs();
 	await fetchInfo();
 }
@@ -658,7 +658,7 @@ async function borrow() {
 		<br>
 		You must repay your Loan with ${BASE_NAME} tokens to get back your ${W_VE_NAME} tokens & redeem it to get back your ${VE_NAME} collateral.
 		<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
-	`)
+	`);
 	//gubs();
 	await fetchInfo();
 }
