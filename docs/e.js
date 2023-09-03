@@ -414,7 +414,7 @@ async function redeem() {
 		<br>
 		<br>Please confirm the Redeem Transaction at your wallet provider now.
 	`);
-	let _tr = await vl.call(amt);
+	let _tr = await vl.redeem(amt);
 	console.log(_tr);
 	notice(`
 		<h3>Redeeming ${W_VE_NAME}</h3>
@@ -641,7 +641,7 @@ async function borrow() {
 		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${ fornum(amt,18).toLocaleString() } ${BASE_NAME}</u><br>
 		<br>Please confirm the final Loan Transaction at your wallet provider now.
 	`);
-	let _tr = await vl.lend(amt);
+	let _tr = await vl.borrow(amt);
 	console.log(_tr);
 	notice(`
 		<h3>Borrowing ${BASE_NAME}</h3>
@@ -708,7 +708,7 @@ async function repay() {
 		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${ fornum(amt,18).toLocaleString() } ${BASE_NAME}</u><br>
 		<br>Please confirm the final Loan Transaction at your wallet provider now.
 	`);
-	let _tr = await vl.lend(amt);
+	let _tr = await vl.repay();
 	console.log(_tr);
 	notice(`
 		<h3>Repaying ${BASE_NAME}</h3>
