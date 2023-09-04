@@ -1,0 +1,314 @@
+<!doctype html>
+<html>
+<meta charset="UTF-8">
+<head>
+<meta name="description" content="venft.app : Borrow RETRO against veRETRO">
+<meta name="keywords" content="Ftm.guru, Guru Network, Finance, Decentralized Finance, BSC, Binance Smart Chain, defi, Airdrop, RETRO, Thena.fi, veNFT, Solidly, Thena, Fantom Opera, FTM">
+<title>venft.app - Borrow RETRO with veRETRO!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="https://ftm.guru/icons/ethena.png"/>
+<link rel="stylesheet" href="e.css"/>
+<body>
+	<div id="particle-container-div">
+		<div id="particle-container">
+			<div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+		</div>
+	</div>
+
+
+
+	<div class="topnav">
+		<div align="left">
+			<img src="https://ftm.guru/icons/solidly.svg" style="vertical-align: middle;" height="32px">
+			venft.app
+		</div>
+
+
+
+		<div align="right">
+			<p id="p_cw" style="position: relative;top: 10px;">
+				<span id="cw" onclick="cw()">
+					Hello 👋 <span id="cw_og">Connect wallet!</span>
+				</span>
+			</p>
+		</div>
+		<div align="left" class="topnav-mkts" id="topnav-mkts">
+		</div>
+	</div>
+
+
+	<div class="partnership">
+		<h1><span>venft.app/retro</span></h1>
+		<h3 style="font-family:light">
+			Borrow Liquid RETRO Tokens against your Locked veRETRO NFT
+			<br>
+			Lend RETRO tokens to earn voting rewards without locking.
+		</h3>
+		<br>
+	</div>
+
+
+	<br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="two-pane-auto-1139">
+
+
+
+
+		<div class="mechanism">
+			<div class="mechanism-subtitle">
+				<h2>Pledge your veRETRO </h2>
+				<i>Leverage your ordinary veRETRO NFT with the power of XveRETRO Collateral to amplify your returns! </i>
+			</div>
+
+			<br><br>
+			<div class="two-pane-mech met">
+				<div>Rewards APY : <span id="met-ple-apy">0.00%</span></div>
+				<div>Total Corpus : <span id="met-ple-tvl">$0.00</span></div>
+			</div>
+			<div class="hr-nft"></div>
+
+			<div class="two-pane-mech">
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Deposit veRETRO</h3>
+					<span id="nft-bal">0 veRETRO</span> NFTs available
+					<br>
+					<select class="equal-gradient" id="nft-sel" onchange="quote()">
+						<option value="" selected>Choose a NFT</option>
+					</select>
+					<div class="two-pane-auto">
+						<button onclick="pledge()" class="btn1"> Pledge for <span id="nft-offer">0 XveRETRO</span> </button>
+					</div>
+				</div>
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Redeem XveRETRO</h3>
+					<span id="avl-call-xve" class="input-nums" onclick="$('inp-redeem').value=this.innerHTML.split(' ')[0]">0 XveRETRO</span> available
+					<br>
+					<input id="inp-redeem" class="inp2" placeholder="Amount to Call">
+					<div class="two-pane-auto">
+						<button onclick="redeem()" class="btn2"> Redeem as veNFT </button>
+						<button onclick="redeemAll()" class="btn2"> Redeem All </button>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+
+
+
+
+
+		<div class="mechanism">
+			<div class="mechanism-subtitle">
+				<h2>For RETRO Borrowers</h2>
+				<i>Take out an interest-free liquid RETRO Loan against your locked veRETRO NFT without selling and while still earning from your veNFT!</i>
+			</div>
+
+			<br><br>
+			<div class="two-pane-mech met">
+				<div>Borrowable : <span id="met-borr-avl">$0.00</span></div>
+				<div>Current Margin : <span id="met-borr-ltv">0%</span></div>
+				<div>Total Loans : <span id="met-borr-lent">$0.00</span></div>
+			</div>
+			<div class="hr-nft"></div>
+
+			<div class="two-pane-mech">
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Borrow RETRO</h3>
+					<span id="avl-repay-bmax" class="input-nums" onclick="$('inp-borrow').value=this.innerHTML.split(' ')[0]">0 RETRO</span> maximum
+					<br>
+					<input id="inp-borrow" class="inp2" placeholder="Amount to Borrow">
+					<div class="two-pane-auto">
+						<button onclick="borrow()" class="btn2"> Borrow RETRO </button>
+						<button onclick="borrowMax()" class="btn2"> Borrow Max </button>
+					</div>
+				</div>
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Repay your Loans </h3>
+					Health : <span id="avl-repay-hf">You are Debt-Free</span>
+					<br>
+					<span id="avl-repay-borr">0 RETRO</span> borrowed
+					<br>
+					<span id="avl-repay-coll">0 XveRETRO</span> collateral
+					<br>
+					<button onclick="repay()" class="btn1"> Repay All Debts </button>
+				</div>
+			</div>
+
+
+		</div>
+
+
+
+	</div>
+
+	<br><br><br><br>
+
+
+
+
+
+
+
+	<div class="two-pane-1139">
+
+		<div class="mechanism">
+			<div class="mechanism-subtitle">
+				<h2>For RETRO Lenders</h2>
+				<i>Earn passive income without locking your RETRO with yield from veNFTs of others!</i>
+			</div>
+
+			<br><br>
+			<div class="two-pane-mech met">
+				<div>Lending APY : <span id="met-lend-apy">0.00%</span></div>
+				<div>Total Deposits : <span id="met-lend-tvl">$0.00</span></div>
+			</div>
+			<div class="hr-nft"></div>
+
+			<div class="two-pane-mech">
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Deposit RETRO</h3>
+					<span id="avl-lend-bbal" class="input-nums" onclick="$('inp-lend').value=this.innerHTML.split(' ')[0]">0 RETRO</span> available
+					<br>
+					<input id="inp-lend" class="inp2" placeholder="Amount to Lend">
+					<div class="two-pane-auto">
+						<button onclick="lend()" class="btn2"> Lend RETRO </button>
+						<button onclick="lendAll()" class="btn2"> Deposit All </button>
+					</div>
+				</div>
+				<div style="margin: auto 10px;">
+					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Withdraw RETRO</h3>
+					<span id="avl-call-wbbal" class="input-nums" onclick="$('inp-call').value=this.innerHTML.split(' ')[0]">0 XRETRO</span> available
+					<br>
+					<input id="inp-call" class="inp2" placeholder="Amount to Call">
+					<div class="two-pane-auto">
+						<button onclick="call()" class="btn2"> Withdraw </button>
+						<button onclick="callAll()" class="btn2"> Call Back All </button>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+		</div></div>
+
+	</div>
+
+
+	<br><br><br><br>
+
+
+
+
+
+
+
+
+	<div id="note" class="overlay">
+		<div class="popup">
+			<a class="close" href="#">&times;</a>
+			<div class="content" id="content1">
+				w31c0m3 fren!<br>trade well :)
+			</div>
+		</div>
+	</div>
+
+
+	<div class="extra">
+		<br><br>
+		<h3><a href="https://eliteness.network">Powered by Guru Network</a></h3>
+		<div id="social">
+			<a href="https://discord.gg/QpyfMarNrV"><img src="https://ftm.guru/icons/discord.svg"></a>
+			<a href="https://dune.com/1337"><img src="https://ftm.guru/icons/dune.svg"></a>
+			<a href="https://twitter.com/FTM1337"><img src="https://ftm.guru/icons/twitter.svg"></a>
+			<!--<a href="https://t.me/FTM1337"><img src="https://ftm.guru/icons/telegram.svg"></a>-->
+		</div>
+		<!--
+		<small id="stats">
+		</small>
+		<h1><span></span></h1>
+		-->
+		<br><br>
+	</div>
+
+
+
+
+
+<!-- IGNORE BELOW BLOCK : DEV LOGS -->
+		<div style="display:none">
+		<span id="cw_m"></span>
+		<div id="connect">
+			Please connect your web3 wallet.
+			<br><br>
+			<button onclick="cw()" id="btn-connect">Connect</button>
+		</div>
+		<div id="switch">
+			<b id="btn-switch" onclick="cw()">
+				<img src="img/wallet.svg" width="24px" style="position:relative;top:4px">
+				<span id="cw"></span>
+			</b>
+			<br>Balance: <b style="font-family:bold" id="usb-mtv">?</b> <img class="imgmtv" src="https://ftm.guru/icons/usdc.svg" width="20px" style="position:relative;top:4px">USDC<br>
+			<span style="font-size:0.9em">Wallet at <img class="imgmtv" src="https://ftm.guru/icons/ftm.svg" width="20px" style="position:relative;top:4px">Fantom Opera. <a href="index.html" style="color:aqua;font-family:bold">Change?</a></span>
+		</div>
+	</div>
+<!-- IGNORE ABOVE BLOCK : DEV LOGS -->
+
+			<script src="https://ftm.guru/ethers-5.2.umd.min.js" type="application/javascript" defer="true"></script>
+			<!--
+			<script src="https://ftm.guru/chart.min.js" type="application/javascript"></script>
+			<script src="https://ftm.guru/chartjs-adapter-date-fns.bundle.min.js" type="application/javascript"></script>
+			-->
+			<script src="e.js"></script>
+
+			<script>
+				CHAINID = 137;
+				RPC_URL = "https://rpc.ankr.com/polygon";
+				EXPLORE = "https://polygonscan.com";
+				CHAIN_NAME = "Polygon (Matic POS) Mainnet";
+				CHAIN_GAS = "MATIC";
+
+				VENFT		= "0xB419cE2ea99f356BaE0caC47282B9409E38200fa";
+				VOTER		= "0xaccba5e852ab85e5e3a84bc8e36795bd8cec5c73";
+
+				BASE		= "0xbfa35599c7aebb0dace9b5aa3ca5f2a79624d8eb";
+				BASE_NAME	= "RETRO";
+				BASE_LOGO	= "https://ftm.guru/icons/retro.svg";
+
+				VE			= "0xB419cE2ea99f356BaE0caC47282B9409E38200fa";
+				VE_NAME		= "veRETRO";
+				VE_LOGO		= "https://ftm.guru/icons/retro.svg";
+
+				W_BASE		= "0xCc84e3D00798bd947DA13B8545F800D12C7aF60F";
+				W_BASE_NAME	= "XRETRO";
+				W_BASE_LOGO	= "https://ftm.guru/icons/retro.svg";
+
+				W_VE		= "0x88bB27FB45ab4C20aE5Be83aB302f5935543d8cc";
+				W_VE_NAME	= "XveRETRO";
+				W_VE_LOGO	= "https://ftm.guru/icons/retro.svg";
+
+				VLENDR		= "0x7b7faf5f614f8c13f80a8775b61d1c22f48ebd27";
+				VEINFO		= "0x5dc30ed874d3bb22653d184f0f023eac97aa4a14";
+
+
+			</script>
+	</body>
+</html>
