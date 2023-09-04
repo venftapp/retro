@@ -554,7 +554,9 @@ select:hover {
 	margin: auto 10px;
 }
 
-
+.input-nums {
+  text-decoration: dashed underline white 1px;
+}
 
 
 

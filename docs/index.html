@@ -97,7 +97,7 @@
 				</div>
 				<div style="margin: auto 10px;">
 					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Redeem XveRETRO</h3>
-					<span id="avl-call-xve">0 XveRETRO</span> available
+					<span id="avl-call-xve" class="input-nums" onclick="$('inp-redeem').value=this.innerHTML.split(' ')[0]">0 XveRETRO</span> available
 					<br>
 					<input id="inp-redeem" class="inp2" placeholder="Amount to Call">
 					<div class="two-pane-auto">
@@ -132,7 +132,7 @@
 			<div class="two-pane-mech">
 				<div style="margin: auto 10px;">
 					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Borrow RETRO</h3>
-					<span id="avl-repay-bmax">0 RETRO</span> maximum
+					<span id="avl-repay-bmax" class="input-nums" onclick="$('inp-borrow').value=this.innerHTML.split(' ')[0]">0 RETRO</span> maximum
 					<br>
 					<input id="inp-borrow" class="inp2" placeholder="Amount to Borrow">
 					<div class="two-pane-auto">
@@ -185,7 +185,7 @@
 			<div class="two-pane-mech">
 				<div style="margin: auto 10px;">
 					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Deposit RETRO</h3>
-					<span id="avl-lend-bbal">0 RETRO</span> available
+					<span id="avl-lend-bbal" class="input-nums" onclick="$('inp-lend').value=this.innerHTML.split(' ')[0]">0 RETRO</span> available
 					<br>
 					<input id="inp-lend" class="inp2" placeholder="Amount to Lend">
 					<div class="two-pane-auto">
@@ -195,7 +195,7 @@
 				</div>
 				<div style="margin: auto 10px;">
 					<h3><img src="https://ftm.guru/icons/retro.svg" height="20px" style="vertical-align:bottom"> Withdraw RETRO</h3>
-					<span id="avl-call-wbbal">0 XRETRO</span> available
+					<span id="avl-call-wbbal" class="input-nums" onclick="$('inp-call').value=this.innerHTML.split(' ')[0]">0 XRETRO</span> available
 					<br>
 					<input id="inp-call" class="inp2" placeholder="Amount to Call">
 					<div class="two-pane-auto">
