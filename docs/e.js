@@ -414,6 +414,31 @@ async function redeem() {
 	w_ve = new ethers.Contract(W_VE, ["function balanceOf(address) public view returns(uint)","function allowance(address,address) public view returns(uint)","function approve(address,uint)"], signer);
 	vl = new ethers.Contract(VLENDR,VLENDRABI,signer);
 
+	alvo = await w_ve.allowance(window.ethereum.selectedAddress,VLENDR);
+	console.log("alvo: ",alvo);
+	if( Number(alvo) <= amt) {
+		notice(`
+			<h3>Approval required</h3>
+			${W_VE_NAME} requires your approval to complete this redemption.<br><br>
+			<h4><u><i>Please Confirm this transaction in your wallet!</i></u></h4>
+		`);
+		let _tr = await w_ve.approve(VLENDR,ethers.constants.MaxUint256);
+		console.log(_tr);
+		notice(`
+			<h3>Submitting Approval Transaction!</h3>
+			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+		`);
+		_tw = await _tr.wait()
+		console.log(_tw)
+		notice(`
+			<h3>Approval Completed!</h3>
+			<br><br>
+			<h4><a target="_blank" href="${EXPLORE}/tx/${_tr.hash}">View on Explorer</a></h4>
+			<br><br>
+			Please confirm the Redemption Transaction at your wallet provider now.
+		`);
+	}
+
 	notice(`
 		<h3>Redeeming ${W_VE_NAME}</h3>
 		<img style='height:20px;position:relative;top:4px' src="${BASE_LOGO}"> <u>${fornum(amt,18).toLocaleString()} ${W_VE_NAME}</u>
